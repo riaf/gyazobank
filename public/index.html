@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/dropzone/3.8.4/css/dropzone.css">
+    <title>Gyazobank</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Gyazobank</h1>
+
+      <form action="/upload" class="dropzone" id="dropzone">
+        <div class="fallback">
+          <input type="file" name="imagedata">
+        </div>
+      </form>
+    </div>
+    <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/dropzone/3.8.4/dropzone.min.js"></script>
+    <script>
+      $(function() {
+        var dz = new Dropzone(document.querySelector("#dropzone"), {
+          paramName: 'imagedata',
+          uploadMultiple: false,
+          acceptedFiles: '.png'
+        });
+
+        dz.on('success', function(e, url) {
+          if (url) {
+            window.location.href = url;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

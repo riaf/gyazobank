@@ -1,0 +1,33 @@
+{
+  "name": "gyazobank",
+  "version": "1.0.0",
+  "description": "Private Gyazo Server",
+  "main": "app.coffee",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/riaf/gyazobank.git"
+  },
+  "keywords": [
+    "Gyazo"
+  ],
+  "author": "Keisuke SATO <riaf@me.com>",
+  "license": "LGPL v3",
+  "bugs": {
+    "url": "https://github.com/riaf/gyazobank/issues"
+  },
+  "homepage": "https://github.com/riaf/gyazobank",
+  "dependencies": {
+    "aws-sdk": "^2.0.23",
+    "coffee-script": "^1.8.0",
+    "express": "^4.10.0",
+    "express-busboy": "^1.0.1",
+    "node-pngquant-native": "0.0.12",
+    "serve-static": "^1.7.1"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}

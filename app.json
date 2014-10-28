@@ -1,0 +1,35 @@
+{
+  "name": "gyazobank",
+  "description": "Private Gyazo Server",
+  "keywords": [
+    "gyazo"
+  ],
+  "website": "https://github.com/riaf/gyazobank",
+  "repository": "https://github.com/riaf/gyazobank.git",
+  "logo": "https://small-sharp-tool.com/logo.svg",
+  "success_url": "/",
+  "env": {
+    "NODE_ENV": "production",
+    "AWS_S3_ENDPOINT": {
+      "description": "S3 endpoint",
+      "value": "b.storage.sakura.ad.jp",
+      "required": true
+    },
+    "AWS_S3_ACCESS_KEY": {
+      "description": "S3 Access Key ID",
+      "required": true
+    },
+    "AWS_S3_SECRET_KEY": {
+      "description": "S3 Secret Key",
+      "required": true
+    },
+    "AWS_S3_ACL": {
+      "description": "ACL",
+      "value": "public-read"
+    },
+    "AWS_S3_BUCKET": {
+      "description": "Bucket name",
+      "value": "gyazobank"
+    }
+  }
+}
