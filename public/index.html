@@ -24,7 +24,7 @@
         var dz = new Dropzone(document.querySelector("#dropzone"), {
           paramName: 'imagedata',
           uploadMultiple: false,
-          acceptedFiles: '.png'
+          acceptedFiles: '.png,.jpg,.gif,.jpeg'
         });
 
         dz.on('success', function(e, url) {

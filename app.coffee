@@ -2,6 +2,7 @@ AWS         = require "aws-sdk"
 busboy      = require "express-busboy"
 express     = require "express"
 fs          = require "fs"
+gm          = require "gm"
 pngquant    = require "node-pngquant-native"
 serveStatic = require "serve-static"
 
@@ -34,16 +35,23 @@ app.post "/upload", (req, res) ->
   url = "http://#{ bucket }.#{ endpoint }/#{ name }"
 
   fs.readFile filepath, (err, buffer) ->
-    s3.putObject {
-      ACL: acl
-      Body: pngquant.compress buffer
-      Bucket: bucket
-      Key: name
-    }, (err, data) ->
+    if err
+      return res.send ""
+
+    gm(buffer).toBuffer "PNG", (err, pngBuffer) ->
       if err
-        res.send ""
-      else
-        res.send url
+        return res.send ""
+
+      s3.putObject {
+        ACL: acl
+        Body: pngquant.compress pngBuffer
+        Bucket: bucket
+        Key: name
+      }, (err, data) ->
+        if err
+          res.send ""
+        else
+          res.send url
 
 app.listen process.env.PORT || 3000
 
