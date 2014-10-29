@@ -6,7 +6,7 @@
   ],
   "website": "https://github.com/riaf/gyazobank",
   "repository": "https://github.com/riaf/gyazobank.git",
-  "logo": "https://small-sharp-tool.com/logo.svg",
+  "logo": "http://res.cloudinary.com/otobank/image/upload/v1414569312/gyazobank.png",
   "success_url": "/",
   "env": {
     "NODE_ENV": "production",
