@@ -13,6 +13,16 @@ Requirements
 * Amazon S3 (or else)
 
 
+Configurations
+--------------
+
+Set environment variables:
+
+* `AWS_S3_ENDPOINT` (Example: `s3.amazonaws.com`)
+* `AWS_S3_ACCESS_KEY`
+* `AWS_S3_SECRET_KEY`
+
+
 Author
 ------
 
