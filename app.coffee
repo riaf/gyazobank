@@ -38,7 +38,7 @@ app.post "/upload", (req, res) ->
     if err
       return res.send ""
 
-    gm(buffer).toBuffer "PNG", (err, pngBuffer) ->
+    gm(buffer).options(imageMagick: true).toBuffer "PNG", (err, pngBuffer) ->
       if err
         return res.send ""
 
@@ -47,8 +47,10 @@ app.post "/upload", (req, res) ->
         Body: pngquant.compress pngBuffer
         Bucket: bucket
         Key: name
+        ContentType: "image/png"
       }, (err, data) ->
         if err
+          console.log err
           res.send ""
         else
           res.send url
