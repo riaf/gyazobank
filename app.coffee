@@ -38,22 +38,25 @@ app.post "/upload", (req, res) ->
     if err
       return res.send ""
 
-    gm(buffer).options(imageMagick: true).toBuffer "PNG", (err, pngBuffer) ->
-      if err
-        return res.send ""
-
-      s3.putObject {
-        ACL: acl
-        Body: pngquant.compress pngBuffer
-        Bucket: bucket
-        Key: name
-        ContentType: "image/png"
-      }, (err, data) ->
+    gm(buffer)
+      .options(imageMagick: true)
+      .autoOrient()
+      .toBuffer "PNG", (err, pngBuffer) ->
         if err
-          console.log err
-          res.send ""
-        else
-          res.send url
+          return res.send ""
+
+        s3.putObject {
+          ACL: acl
+          Body: pngquant.compress pngBuffer
+          Bucket: bucket
+          Key: name
+          ContentType: "image/png"
+        }, (err, data) ->
+          if err
+            console.log err
+            res.send ""
+          else
+            res.send url
 
 app.listen process.env.PORT || 3000
 
