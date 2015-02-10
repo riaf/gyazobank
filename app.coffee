@@ -1,21 +1,20 @@
-AWS         = require "aws-sdk"
 busboy      = require "express-busboy"
 express     = require "express"
 fs          = require "fs"
+gcloud      = require "gcloud"
 gm          = require "gm"
-pngquant    = require "node-pngquant-native"
 serveStatic = require "serve-static"
 
-accessKeyId     = process.env.AWS_S3_ACCESS_KEY
-acl             = process.env.AWS_S3_ACL || "public-read"
-bucket          = process.env.AWS_S3_BUCKET || "gyazobank"
-endpoint        = process.env.AWS_S3_ENDPOINT
-secretAccessKey = process.env.AWS_S3_SECRET_KEY
+projectId         = process.env.GCLOUD_PROJECT_ID
+credentialKeyFile = process.env.GCLOUD_KEYFILE
+bucketName        = process.env.GCLOUD_BUCKET || "gyazobank"
+domain            = process.env.DOMAIN || "storage.googleapis.com/#{ bucketName }"
 
-s3 = new AWS.S3
-  endpoint: new AWS.Endpoint endpoint
-  accessKeyId: accessKeyId
-  secretAccessKey: secretAccessKey
+storage = gcloud.storage
+  projectId: projectId
+  keyFilename: credentialKeyFile
+
+bucket = storage.bucket bucketName
 
 app = express()
 app.use serveStatic "public"
@@ -32,7 +31,7 @@ app.post "/upload", (req, res) ->
   filepath = req.files.imagedata.file
 
   name = "#{ req.files.imagedata.uuid }.png"
-  url = "http://#{ bucket }.#{ endpoint }/#{ name }"
+  url = "http://#{ domain }/#{ name }"
 
   fs.readFile filepath, (err, buffer) ->
     if err
@@ -41,22 +40,14 @@ app.post "/upload", (req, res) ->
     gm(buffer)
       .options(imageMagick: true)
       .autoOrient()
-      .toBuffer "PNG", (err, pngBuffer) ->
+      .stream "png", (err, stdout, stderr) ->
         if err
           return res.send ""
 
-        s3.putObject {
-          ACL: acl
-          Body: pngquant.compress pngBuffer
-          Bucket: bucket
-          Key: name
-          ContentType: "image/png"
-        }, (err, data) ->
-          if err
-            console.log err
-            res.send ""
-          else
-            res.send url
+        stdout.pipe bucket.file(name).createWriteStream({ "Cache-Control": "public, max-age=31536000" }).on "finish", ->
+          res.send url
+        .on "error", ->
+          res.send ""
 
 app.listen process.env.PORT || 3000
 
